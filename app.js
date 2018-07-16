@@ -5,7 +5,7 @@ const routes = require("./routes");
 
 const app = express();
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 nunjucks.configure('templates', {
   autoescape: true,

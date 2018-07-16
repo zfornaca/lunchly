@@ -13,15 +13,19 @@ router.get("/add/", async (req, res) => {
 })
 
 router.post("/add/", async (req, res) => {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const phone = req.body.phone;
-  const notes = req.body.notes;
+  try {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const phone = req.body.phone;
+    const notes = req.body.notes;
 
-  const customer = new Customer({ firstName, lastName, phone, notes });
-  await customer.save()
+    const customer = new Customer({ firstName, lastName, phone, notes });
+    await customer.save()
 
-  return res.redirect(`/customers/${customer.id}/`);
+    return res.redirect(`/${customer.id}/`);
+  } catch (e) {
+    return res.status(500).send(`Can't add customer: ${e}`);
+  }
 });
 
 router.get("/:customerId/", async (req, res) => {

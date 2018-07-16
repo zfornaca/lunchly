@@ -1,86 +1,21 @@
---
--- PostgreSQL database dump
---
+\c lunchly 
 
--- Dumped from database version 11beta2
--- Dumped by pg_dump version 11beta2
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: customers; Type: TABLE; Schema: public; Owner: joel
---
-
-CREATE TABLE public.customers (
-    id integer NOT NULL,
+CREATE TABLE customers (
+    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     first_name text NOT NULL,
     last_name text NOT NULL,
     phone text,
     notes text DEFAULT ''::text NOT NULL
 );
 
-
-ALTER TABLE public.customers OWNER TO joel;
-
---
--- Name: customers_id_seq; Type: SEQUENCE; Schema: public; Owner: joel
---
-
-ALTER TABLE public.customers ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.customers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Name: reservations; Type: TABLE; Schema: public; Owner: joel
---
-
-CREATE TABLE public.reservations (
-    id integer NOT NULL,
-    customer_id integer NOT NULL,
+CREATE TABLE reservations (
+    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    customer_id integer NOT NULL REFERENCES customers,
     start_at timestamp with time zone NOT NULL,
     num_guests integer NOT NULL,
     notes text DEFAULT ''::text NOT NULL,
     CONSTRAINT reservations_num_guests_check CHECK ((num_guests > 0))
 );
-
-
-ALTER TABLE public.reservations OWNER TO joel;
-
---
--- Name: reservations_id_seq; Type: SEQUENCE; Schema: public; Owner: joel
---
-
-ALTER TABLE public.reservations ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.reservations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: joel
---
 
 COPY public.customers (id, first_name, last_name, phone, notes) FROM stdin;
 1	Anthony	Gonzales	590-813-4874x723	Money voice rate chair war subject kid.
@@ -183,14 +118,7 @@ COPY public.customers (id, first_name, last_name, phone, notes) FROM stdin;
 98	Cynthia	Patel	(435)534-8363x5789	
 99	Joshua	Cook	(475)724-2506x890	
 100	Michael	Hudson	\N	
-101	Bob	Smith	\N	
-102	Bob	Smithy	\N	
 \.
-
-
---
--- Data for Name: reservations; Type: TABLE DATA; Schema: public; Owner: joel
---
 
 COPY public.reservations (id, customer_id, start_at, num_guests, notes) FROM stdin;
 1	16	2018-09-08 12:20:07-07	2	Decade college home heart.
@@ -393,65 +321,10 @@ COPY public.reservations (id, customer_id, start_at, num_guests, notes) FROM std
 198	66	2018-06-15 13:56:43-07	9	Every fight message together international whose key.
 199	7	2018-08-30 16:11:31-07	5	Training range discussion notice mother art food.
 200	53	2018-12-05 13:41:30-08	2	
-201	102	2000-12-31 16:00:00-08	2	
-202	39	2005-10-11 17:00:00-07	1	
-203	39	2019-01-01 00:00:00-08	1	
 \.
 
-
---
--- Name: customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: joel
---
-
-SELECT pg_catalog.setval('public.customers_id_seq', 102, true);
-
-
---
--- Name: reservations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: joel
---
-
-SELECT pg_catalog.setval('public.reservations_id_seq', 203, true);
-
-
---
--- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: joel
---
-
-ALTER TABLE ONLY public.customers
-    ADD CONSTRAINT customers_pkey PRIMARY KEY (id);
-
-
---
--- Name: reservations reservations_pkey; Type: CONSTRAINT; Schema: public; Owner: joel
---
-
-ALTER TABLE ONLY public.reservations
-    ADD CONSTRAINT reservations_pkey PRIMARY KEY (id);
-
-
---
--- Name: reservations_customer_id_idx; Type: INDEX; Schema: public; Owner: joel
---
+SELECT pg_catalog.setval('public.customers_id_seq', 100, true);
+SELECT pg_catalog.setval('public.reservations_id_seq', 200, true);
 
 CREATE INDEX reservations_customer_id_idx ON public.reservations USING btree (customer_id);
-
-
---
--- Name: reservations_start_at_idx; Type: INDEX; Schema: public; Owner: joel
---
-
 CREATE INDEX reservations_start_at_idx ON public.reservations USING btree (start_at);
-
-
---
--- Name: reservations reservations_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: joel
---
-
-ALTER TABLE ONLY public.reservations
-    ADD CONSTRAINT reservations_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(id);
-
-
---
--- PostgreSQL database dump complete
---
-
