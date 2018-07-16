@@ -5,7 +5,7 @@ Lunch.ly Reservation System
 Part One: Setting Up
 ====================
 
-1. Create a database, `lunchly`::
+1. Create a database,  ``lunchly``::
 
    $ createdb lunchly
 
@@ -13,16 +13,17 @@ Part One: Setting Up
 
    $ psql lunchly < data.sql
 
-   (If you want to see the script that generated all this sample database, it's in the
-   solution directory as `seed.py`)
+   (Later, if you're curious and want to see the script that generated all this sample data, 
+   it's in the solution directory as `seed.py`)
 
-3. Install the required node modules:
+3. Install the required node modules::
 
    $ npm install
 
 4. Start the server with ``nodemon``
 
-5. Take a tour of the site: you should be able to see the list of customers, view a customer
+5. Take a tour of the site at ``http://localhost:3000`` --- you should be able to see the list of 
+   customers, view a customer
    detail page, and add a customer. Adding a reservation is not yet complete, so expect errors
    if you try to create a new reservation.
 
@@ -30,7 +31,7 @@ Part One: Setting Up
 Part Two: Look at the Code!
 ===========================
 
-There's lots of existing sample code. **Read it!**
+There's lots of existing sample code. **Give yourself a quick tour!**
 
 app.js
   Our application object; can be imported from other files/tests
@@ -57,13 +58,17 @@ Part Three: Setters/Getters
 To make our model instances feel more like straightforward JS objects, this code uses JS
 "setter" and "getter" dynamic properties. This allows you to use an object like this::
 
+.. code-block:: javascript
+
     cat = new Cat();
     cat.color = "orange";
 
     console.log("This cat is ", cat.color);
 
-while having the `color` property incorporate business logic. For example, our class could
+while having the *color* property incorporate business logic. For example, our class could
 be:
+
+.. code-block:: javascript
 
     class Cat {
       get color() {
@@ -81,9 +86,9 @@ Here, we can have validation when we set a property, while "abstracting away" th
 The user of this object doesn't need to know/understand that this happens --- just say things like
 ``cat.color = "orange"``.
 
-(Of course, we could have done this by writing a function named something like `setColor`, and
+(Of course, we could have done this by writing a function named something like *setColor*, and
 then users of the class would set the color with ``cat.setColor("orange")``, but these kind of
-explicit setter functions, or correspinding `getColor` getter functions can be tedious to use,
+explicit setter functions, or correspinding ``getColor()`` getter functions can be tedious to use,
 with all of those parentheses).
 
 You should read about getters/setters in JS:
@@ -92,7 +97,7 @@ You should read about getters/setters in JS:
 
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set
 
-Take a close look at the `models.js` file to see how we used getters/setters.
+Take a close look at the *models.js* file to see how we used getters/setters.
 
 
 Part Four: Class (Static) Methods
@@ -100,7 +105,7 @@ Part Four: Class (Static) Methods
 
 Many methods on objects are called on an *instance* of a class (called on an individual cat,
 to use our example above). In some cases, though, you may want a method that isn't called
-on a particular cat, but is called on the `Cat` class *itself*.
+on a particular cat, but is called on the ``Cat`` class *itself*.
 
 This is most often useful for methods that do things like create a new cat, or look up a
 cat in a database --- you'd want to call this function *before* we had an individual cat yet,
@@ -109,7 +114,7 @@ since the job of this function is to find/create one.
 While many languages call these "class methods", in Javascript they're often called
 "static methods", so JS uses the `static` keyword to create these methods.
 
-Take a look at the `get(id)` method of the `Customer` and `Reservation` classes. These methods
+Take a look at the ``get(id)`` method of the ``Customer`` and ``Reservation`` classes. These methods
 are meant to be called on the class. They look up the corresponding customer or reservation
 in the database, and return a JS instance of the correct class. Find where this code is being
 used in the handlers and make sure you understand it.
@@ -130,7 +135,7 @@ However, it is possible for Express to template complete HTML pages, the way we 
 To do this, we use the "Nunjucks" library, which is an implementation of the Jinja2 language
 in Javascript.
 
-Take a quick look at the templates in `/templates/`. There's nothing particular you need to
+Take a quick look at the templates in ``/templates/``. There's nothing particular you need to
 do here yet, but you may find it useful to see how easy it is to template in JS.
 
 Part Six: Full Names
@@ -144,7 +149,7 @@ field for labels like "Ms." or "Dr."?
 Those "getter" functions are great opportunities to "abstract away business logic" into a
 class.
 
-Add a "getter" function, `fullName`, to the customer class. This should (for now) return
+Add a "getter" function, ``fullName``, to the customer class. This should (for now) return
 first and last names joined by a space. Change the templates to refer directly to this.
 
 Part Seven: Saving Reservations
@@ -160,12 +165,12 @@ reservations. Write this.
 Part Eight: Validate numGuests
 ==============================
 
-Right now, when users of the model classes set the `numGuests` property, it's a simple
-(not dynamic setter/getter) property on the `Reservation` class. We'd like to move this to
-being using the setter/getter pattern so that we can validate `numGuests` when it is being
+Right now, when users of the model classes set the ``numGuests`` property, it's a simple
+(not dynamic setter/getter) property on the ``Reservation`` class. We'd like to move this to
+being using the setter/getter pattern so that we can validate ``numGuests`` when it is being
 set (you cannot make a reservation for fewer guests than 1). Implement this.
 
-If you do this properly, all of the existing code that uses `numGuests` should just work,
+If you do this properly, all of the existing code that uses ``numGuests`` should just work,
 without needing any changes. This is one of the benefits of setters/getters --- you can add
 dynamically handling later in a project, and existing code that simple sets/gets properties
 would still work.
@@ -226,4 +231,3 @@ you could add to this system:
   This is a pretty big feature to learn about and add, but this might be a neat weekend day
   project if you're interested in learning more about real-world backend search.
 
-  
