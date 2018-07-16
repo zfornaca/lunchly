@@ -1,9 +1,8 @@
-const pg = require("pg");
-const moment = require("moment")
+const pg = require('pg');
+const moment = require('moment');
 
-const db = new pg.Client("postgresql://localhost/lunchly");
+const db = new pg.Client('postgresql://localhost/lunchly');
 db.connect();
-
 
 class Reservation {
   constructor({ id, customerId, numGuests, startAt, notes }) {
@@ -15,18 +14,22 @@ class Reservation {
   }
 
   set numGuests(val) {
-    if (val < 1) throw new Error("Cannot have fewer than 1 guest.")
+    if (val < 1) throw new Error('Cannot have fewer than 1 guest.');
     this._numGuests = val;
   }
 
-  get numGuests() { return this._numGuests }
+  get numGuests() {
+    return this._numGuests;
+  }
 
   set startAt(val) {
     if (val instanceof Date && !isNaN(val)) this._startAt = val;
-    else throw new Error("Not a valid startAt.");
+    else throw new Error('Not a valid startAt.');
   }
 
-  get startAt() { return this._startAt; }
+  get startAt() {
+    return this._startAt;
+  }
 
   get formattedStartAt() {
     return moment(this.startAt).format('MMMM Do YYYY, h:mm a');
@@ -36,14 +39,19 @@ class Reservation {
     this._notes = val || '';
   }
 
-  get notes() { return this._notes; }
+  get notes() {
+    return this._notes;
+  }
 
   set customerId(val) {
-    if (this._customerId && this._customerId !== val) throw new Error("Cannot change customer ID");
+    if (this._customerId && this._customerId !== val)
+      throw new Error('Cannot change customer ID');
     this._customerId = val;
   }
 
-  get customerId() { return this._customerId }
+  get customerId() {
+    return this._customerId;
+  }
 
   static async getReservationsForCustomer(customerId) {
     const results = await db.query(
@@ -81,13 +89,15 @@ class Reservation {
         `INSERT INTO reservations (customer_id, num_guests, start_at, notes)
           VALUES ($1, $2, $3, $4)
           RETURNING id`,
-        [this.customerId, this.numGuests, this.startAt, this.notes])
+        [this.customerId, this.numGuests, this.startAt, this.notes]
+      );
       this.id = result.rows[0].id;
     } else {
       await db.query(
         `UPDATE reservations SET num_guests=$1, start_at=$2, notes=$3
            WHERE id=$4`,
-        [this.numGuests, this.startAt, this.notes, this.id])
+        [this.numGuests, this.startAt, this.notes, this.id]
+      );
     }
   }
 }
@@ -105,13 +115,17 @@ class Customer {
     this._notes = val || '';
   }
 
-  get notes() { return this._notes; }
+  get notes() {
+    return this._notes;
+  }
 
   set phone(val) {
     this._phone = val || null;
   }
 
-  get phone() { return this._phone; }
+  get phone() {
+    return this._phone;
+  }
 
   static async all() {
     const results = await db.query(
@@ -153,14 +167,15 @@ class Customer {
         `INSERT INTO customers (first_name, last_name, phone, notes)
           VALUES ($1, $2, $3, $4)
           RETURNING id`,
-        [this.firstName, this.lastName, this.phone, this.notes]);
-      console.log("result", result.rows[0].id);
+        [this.firstName, this.lastName, this.phone, this.notes]
+      );
       this.id = result.rows[0].id;
     } else {
       await db.query(
         `UPDATE customers SET first_name=$1, last_name=$2, phone=$3, notes=$4)
            WHERE id=$5`,
-        [this.firstName, this.lastName, this.phone, this.notes, this.id]);
+        [this.firstName, this.lastName, this.phone, this.notes, this.id]
+      );
     }
   }
 }
