@@ -14,10 +14,6 @@ class Reservation {
     this.notes = notes;
   }
 
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
-
   set numGuests(val) {
     if (val < 1) throw new Error("Cannot have fewer than 1 guest.")
     this._numGuests = val;
@@ -141,6 +137,10 @@ class Customer {
       [id]
     );
     return new Customer(results.rows[0]);
+  }
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 
   async getReservations() {
