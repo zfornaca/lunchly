@@ -182,12 +182,12 @@ It would be nice to search for a customer by name, rather than having to find th
 a list. Add a quick search form to the bootstrap navigation bar to search for a customer
 by name.
 
-Do this continuing the pattern of abstracting database operations to the model classes ---
+Do this by continuing the pattern of abstracting database operations to the model classes ---
 any route(s) you write shouldn't directly use the database. Think of a good name for any
 new methods on the class.
 
-You can either make a new template to show results, or you could probably make it work
-with the existing listing template.
+You can either make a new route and template to show results, or you could probably make it work
+with the existing listing index route and template (as you'd prefer).
 
 
 Part Ten: Best Customers
