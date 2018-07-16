@@ -56,7 +56,7 @@ Part Three: Setters/Getters
 ===========================
 
 To make our model instances feel more like straightforward JS objects, this code uses JS
-"setter" and "getter" dynamic properties. This allows you to use an object like this::
+"setter" and "getter" dynamic properties. This allows you to use an object like this:
 
 .. code-block:: javascript
 
